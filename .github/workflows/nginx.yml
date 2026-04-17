@@ -1,0 +1,30 @@
+name: Run Nginx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  nginx-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Nginx
+        run: |
+          sudo apt update
+          sudo apt install nginx -y
+
+      - name: Replace Default Page
+        run: |
+          sudo cp index.html /var/www/html/index.html
+
+      - name: Start Nginx
+        run: |
+          sudo systemctl start nginx
+
+      - name: Test Nginx
+        run: curl http://localhost
